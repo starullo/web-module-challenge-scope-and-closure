@@ -89,6 +89,7 @@ function finalScore(cb, num){
   for (let i = 0; i < num; i++) {
     homeScore += cb();
     awayScore += cb();
+
   }
 
   return {
@@ -122,43 +123,12 @@ Final Score: awayTeam - homeTeam */
 function scoreboard(getInningScore, inning, num) {
   let homeScore = 0;
   let awayScore = 0;
-  for (let i = 1; i <= num; i++) {
-    homeScore += inning();
-    awayScore += inning();
-    console.log(getInningScore(i, homeScore, awayScore));
-  }
-}
-
-function getInningScore(num, home, away) {
-
-if (num === 1) {
-  x = 'st';
-} else if (num === 2) {
-  x = 'nd';
-} else if (num == 3) {
-  x = 'rd';
-} else if (num === 9) {
-  return  `9th inning: ${away} - ${home} \n
-  Final Score: ${away} - ${home}`;
-}
-return `${num}${x} inning: ${away} - ${home}`;
-}
-
-scoreboard(getInningScore, inning, 9);
- 
-
-/* OR (if we weren't supposed to create a new function (like I did with getInningScore)) */
-function scoreboard(getInningScore, inning, num) {
-  let homeScore = 0;
-  let awayScore = 0;
   let i = 1;
   let x;
   while (i <= num) {
-  let obj = getInningScore(inning, 1);
-  let home = obj.Home;
-  let away = obj.Away;
-  homeScore += home;
-  awayScore += away;
+  let obj = finalScore(inning, 1);
+  homeScore += obj.Home;
+  awayScore += obj.Away;
     if (i === 1) {
      x = 'st'; 
      } else if (i === 2) {
@@ -175,24 +145,6 @@ i++;
 }
 }
 
-function finalScore(cb, num){
-  let homeScore = 0;
-  let awayScore = 0;
-  for (let i = 0; i < num; i++) {
-    homeScore += cb();
-    awayScore += cb();
-  }
-  return {
-    'Home': homeScore,
-    'Away': awayScore
-  }
 
-}
-
-function inning(){
-
-    return Math.floor(Math.random() * 3);
-
-}
 
 scoreboard(finalScore, inning, 9)
