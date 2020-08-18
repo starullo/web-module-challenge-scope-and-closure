@@ -126,25 +126,39 @@ function scoreboard(getInningScore, inning, num) {
   let i = 1;
   let x;
   while (i <= num) {
-  let obj = finalScore(inning, 1);
-  homeScore += obj.Home;
-  awayScore += obj.Away;
+    let obj = getInningScore(inning, 1);
+    homeScore += obj.Home;
+    awayScore += obj.Away;
     if (i === 1) {
-     x = 'st'; 
-     } else if (i === 2) {
-     x = 'nd';
-     } else if (i == 3) {
-     x = 'rd';
-     } else if (i === 9) {
-  console.log(`9th inning: ${awayScore} - ${homeScore} \n
-  Final Score: ${awayScore} - ${homeScore}`);
-  break;
-     }
-console.log(`${i}${x} inning: ${awayScore} - ${homeScore}`);
-i++;
-}
-}
+      x = 'st'; 
+    } else if (i === 2) {
+      x = 'nd';
+    } else if (i == 3) {
+      x = 'rd';
+    } else if (i >= 4 && i <= 8) {
+      x = 'th';
+    } else if (i === 9) {
+      console.log(`9th inning: ${awayScore} - ${homeScore}`);
+      break;
+    }
+    console.log(`${i}${x} inning: ${awayScore} - ${homeScore}`);
+    i++
+  }
+    if (i === 9 && homeScore === awayScore) {
+      i = 10;
+      while (homeScore === awayScore) {
+        let obj = getInningScore(inning, 1);
+        homeScore += obj.Home;
+        awayScore += obj.Away;
+        console.log(`${i}th inning: ${awayScore} - ${homeScore}`);
+        i++;
+    }
+  }
+  if (i >= 9 && homeScore != awayScore) {
+  console.log(`Final Score: ${awayScore} - ${homeScore}`)
+    }
+  }
 
 
 
-scoreboard(finalScore, inning, 9)
+scoreboard(finalScore, inning, 4)
