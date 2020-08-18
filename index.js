@@ -28,9 +28,16 @@ function processFirstItem(stringList, callback) {
  * 
  * 1. What is the difference between counter1 and counter2?
  * 
+ * In counter1, the varible 'count' is declared within the function. In counter2, 'count' is declared outside of the function, meaning it has global scope.
+ * 
  * 2. Which of the two uses a closure? How can you tell?
  * 
+ *  counter1 uses a closure. You can tell because the private variable 'count' can still be accessed by counter1, even after counterMaker is done running.
+ * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
+ * 
+ * counter1 would be preferable when you want to make the variable private so you don't accidentally change it's value in your code. 
+ * counter2 might be preferable if you only plan on changing the value of 'count' one time.
  *
 */
 
@@ -56,9 +63,9 @@ function counter2() {
 
 Write a function called `inning` that returns a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
+function inning(){
 
-    /*Code Here*/
+    return Math.floor(Math.random() * 3);
 
 }
 
@@ -76,9 +83,19 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
+function finalScore(cb, num){
+  let homeScore = 0;
+  let awayScore = 0;
+  for (let i = 0; i < num; i++) {
+    homeScore += cb();
+    awayScore += cb();
 
-  /*Code Here*/
+  }
+
+  return {
+    'Home': homeScore,
+    'Away': awayScore
+  }
 
 }
 
@@ -103,8 +120,45 @@ and returns the score at each pont in the game, like so:
 Final Score: awayTeam - homeTeam */
 
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
-}
+function scoreboard(getInningScore, inning, num) {
+  let homeScore = 0;
+  let awayScore = 0;
+  let i = 1;
+  let x;
+  while (i <= num) {
+    let obj = getInningScore(inning, 1);
+    homeScore += obj.Home;
+    awayScore += obj.Away;
+    if (i === 1) {
+      x = 'st'; 
+    } else if (i === 2) {
+      x = 'nd';
+    } else if (i == 3) {
+      x = 'rd';
+    } else if (i >= 4 && i <= 8) {
+      x = 'th';
+    } else if (i === 9) {
+      console.log(`9th inning: ${awayScore} - ${homeScore}`);
+      break;
+    }
+    console.log(`${i}${x} inning: ${awayScore} - ${homeScore}`);
+    i++
+  }
+    if (i === 9 && homeScore === awayScore) {
+      i = 10;
+      while (homeScore === awayScore) {
+        let obj = getInningScore(inning, 1);
+        homeScore += obj.Home;
+        awayScore += obj.Away;
+        console.log(`${i}th inning: ${awayScore} - ${homeScore}`);
+        i++;
+    }
+  }
+  if (i >= 9 && homeScore != awayScore) {
+  console.log(`Final Score: ${awayScore} - ${homeScore}`)
+    }
+  }
 
 
+
+scoreboard(finalScore, inning, 4)
